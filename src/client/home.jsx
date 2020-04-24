@@ -14,15 +14,14 @@ export class Home extends React.Component {
         };
     }
 
-
     componentDidMount() {
-        this.fetchBooks();
+        this.fetchMeals();
         if(this.props.user) {
             this.props.fetchAndUpdateUserInfo();
         }
     }
 
-    async fetchBooks() {
+    async fetchMeals() {
 
         const url = "/api/books";
 
@@ -72,11 +71,10 @@ export class Home extends React.Component {
             return false;
         }
 
-        this.fetchBooks();
+        this.fetchMeals();
 
         return true;
     };
-
 
     render() {
 
@@ -95,7 +93,12 @@ export class Home extends React.Component {
                         <th>Meal(s)</th>
                         <th>Price</th>
                         <th>allergies</th>
+
+                        {user ? (
                         <th>Options</th>
+                        ) : (
+                            <p></p>
+                        )}
                     </tr>
                     </thead>
                     <tbody>
@@ -106,7 +109,6 @@ export class Home extends React.Component {
                             <td>{m.allergies}</td>
 
                             {user ? (
-
                             <td>
                                 <Link to={"/edit?bookId=" + m.id}>
                                 <button className="btn btnM" >
@@ -118,9 +120,7 @@ export class Home extends React.Component {
                                 </button>
                                 </td>
                                 ) : (
-                                <p>
-                                You need to log-in!
-                                </p>
+                                <p></p>
                                 )}
                         </tr>
                     )}
@@ -128,8 +128,7 @@ export class Home extends React.Component {
                 </table>
 
             </div>
-
-        }
+        }// end else
 
         return (
 
@@ -141,15 +140,15 @@ export class Home extends React.Component {
 
                 {user ? (
                     <div>
-                            <Link to={"/create"}>
-                                <button className="btn btnM">New</button>
-                            </Link>
+                        <Link to={"/create"}>
+                            <button className="btn btnM">New</button>
+                        </Link>
                     </div>
                 ) : (
                     <p>
                     </p>
                 )}
             </div>
-        );
-    }
-}
+        );// end return
+    }// end render
+}// end class

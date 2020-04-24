@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
-import {Create} from "./create";
-import {Edit} from "./edit";
+import {Create} from "./dish/create";
+import {Edit} from "./dish/edit";
 import {Home} from "./home";
-import Login from "./login";
-import SignUp from "./signup";
+import Login from "./signUp-login/login";
+import SignUp from "./signUp-login/signup";
 import HeaderBar from "./headerbar";
 
 class App extends React.Component {
