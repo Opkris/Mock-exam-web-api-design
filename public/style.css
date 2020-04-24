@@ -1,0 +1,260 @@
+body {
+    background-color: #4a4a4a;
+}
+
+
+h2{
+    color: goldenrod;
+    size: 150px;
+    text-align: center;
+}
+p {
+    color: white;
+}
+h3{
+    color: white;
+}
+
+#root {
+    margin: 30px;
+}
+
+.quizBtn {
+    height: 30px;
+    width: 300px;
+    background-color: bisque;
+    font-size: 1em;
+    border: 2px solid goldenrod;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 5%;
+}
+
+.prize{
+    height: 20px;
+    width: 100px;
+    background-color: #b1ffb0;
+    font-size: 1em;
+    border: 2px solid goldenrod;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 5%;
+
+}
+
+
+.quizQuestion {
+    display: inline-block;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.headerBar {
+    margin-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid goldenrod;
+    height: 50px;
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-evenly;
+}
+
+.msgDiv {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40%;
+}
+.notLoggedInMsg {
+    justify-self: flex-start;
+    color: #ddc7ad;
+    size: 40em;
+
+}
+.home {
+    float: left;
+}
+.btnPartHeader {
+    float: left;
+    margin: 30px;
+}
+
+.index {
+    float: left;
+    font-size: 12px;
+    text-align: center;
+    width: 30px;
+    border: 1px solid transparent;
+    margin-right: -1px;
+    margin-top: -1px;
+}
+
+.cell-row:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.cell {
+    float: left;
+    background: white;
+    border: 1px solid gray;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    width: 30px;
+    margin-right: -1px;
+    margin-top: -1px;
+}
+
+.cell-victory {
+    background: green;
+}
+
+.cell-defeat {
+    background: red;
+}
+
+.cell-to-insert {
+    background: yellow;
+}
+
+.game {
+    display: flex;
+    flex-direction: row;
+}
+
+.game-info {
+    margin-top: 30px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+.btnPart {
+    display: inline-flex;
+}
+.btn {
+    width: 90px;
+    height: 20px;
+    background-color: rgb(155, 155, 155);
+    color: black;
+    font-size: 1em;
+    text-align: center;
+    padding: 5px;
+    border: 2px solid goldenrod;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+.btnM{
+    width: 90px;
+    height: 34px;
+}
+
+.allMeals {
+    width: 60%;
+    margin-top: 20px;
+    padding: 0;
+    text-align: center;
+    color: white;
+}
+
+
+.oneBook {
+    padding: 4px;
+}
+
+.bookInput {
+    width: 50%;
+    padding: 5px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.inputTitle {
+    color: white;
+    display: inline;
+}
+
+
+.btnDeActive {
+    width: 90px;
+    background-color: rgb(207, 205, 200);
+    color: rgb(153, 153, 153);
+    font-size: 1em;
+    text-align: center;
+    padding: 5px;
+    border: 2px solid rgb(153, 153, 153);
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+}
+.homeText{
+    color: white;
+
+}
+
+.youWon{
+    color: green;
+}
+.youLost{
+    color: red;
+}
+
+/* boxes inside left menu */
+.appetizer_menu{
+    border-bottom: 2px solid goldenrod;
+    width:100%;
+    height:50%;
+}
+.salad_menu{
+    width:100%;
+    height:50%;
+}
+
+ /* boxes inside middle menu */
+.main_dish_menu{
+    width:100%;
+    height:100%;
+
+}
+ /* boxes inside right menu */
+.pizza_menu{
+    border-bottom: 2px solid goldenrod;
+    width:100%;
+    height:50%;
+}
+.drink_menu{
+    width:100%;
+    height:50%;
+}
+
+/* the window boxes */
+.left_menu{
+    float:left;
+    background: rgba(221, 199, 173, 0.21);
+    width:25%;
+    height:500px;
+}
+.middle_menu{
+    float:left;
+    background: rgba(107, 105, 102, 0.21);
+    width:50%;
+    height:500px;
+    place-items: center;
+
+}
+.right_menu{
+    float:right;
+    background: rgba(221, 199, 173, 0.2);
+    width:25%;
+    height:500px;
+}
