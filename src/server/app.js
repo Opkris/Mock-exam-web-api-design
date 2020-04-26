@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require("express-session");
 const LocalStrategy = require('passport-local').Strategy;
-const repository_monday = require("./repository_monday");
+const repository_monday = require("./repository");
 const path = require('path');
 
 const authApi = require('./routes/auth-api');

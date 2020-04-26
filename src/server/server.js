@@ -1,5 +1,5 @@
 const {app} = require('./app');
-const repository = require("./repository_monday");
+const repository = require("./repository");
 
 const port = process.env.PORT || 8080;
 
