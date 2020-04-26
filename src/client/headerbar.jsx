@@ -55,7 +55,7 @@ export class HeaderBar extends React.Component {
             Home
           </Link>
 
-        <div className="notLoggedInMsg">You are not logged in</div>
+        <div className="notLoggedInMsg">Sweet Escape</div>
         <div className="btnPartHeader">
           <Link className="btn" to="/login">
             LogIn

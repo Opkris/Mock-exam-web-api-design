@@ -83,7 +83,7 @@ export class SignUp extends React.Component{
         }
 
         return(
-            <div>
+            <div className="center">
                 <div>
                     <p>User Id:</p>
                     <input type="text"
@@ -112,7 +112,7 @@ export class SignUp extends React.Component{
 
                 {error}
 
-                <div className="btn" onClick={this.doSignUp} id="signUpBtn">Sign Up</div>
+                <div className="btnLs" onClick={this.doSignUp} id="signUpBtn">Sign Up</div>
             </div>
         );
     }

@@ -140,6 +140,7 @@ export class Home extends React.Component {
         let table_wednesday;
         let table_thursday;
         let table_friday;
+        // let table;
         let tableDrink;
         const user = this.props.user;
 
@@ -367,6 +368,51 @@ export class Home extends React.Component {
                 </table>
 
             </div>; // end table
+
+            // table = <div>
+            //     <table className="allMeals">
+            //         <thead>
+            //         <tr>
+            //             <th>Day</th>
+            //             <th>Meal(s)</th>
+            //             <th>Price</th>
+            //             <th>Allergies</th>
+            //             {user ? (
+            //             <th>Options</th>
+            //             ) : (
+            //                 <p></p>
+            //             )}
+            //         </tr>
+            //         </thead>
+            //         <tbody>
+            //         {this.state.meals.map(m=>
+            //             <tr key={"key_" + m.id} className="oneMeal" >
+            //                 <td>{m.day}</td>
+            //                 <td>{m.name}</td>
+            //                 <td>{m.price}</td>
+            //                 <td>{m.allergies}</td>
+            //
+            //                 {user ? (
+            //                 <td>
+            //                     <Link to={"/edit?dishId=" + m.id}>
+            //                     <button className="btn btnM" >
+            //                     <i className="fas fa-edit"></i>
+            //                     </button>
+            //                     </Link>
+            //                     <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
+            //                     <i className="fas fa-trash"></i>
+            //                     </button>
+            //                     </td>
+            //                     ) : (
+            //                     <p></p>
+            //                     )}
+            //             </tr>
+            //         )}
+            //         </tbody>
+            //     </table>
+            //
+            // </div>; // end table
+
 
 
         }// end else

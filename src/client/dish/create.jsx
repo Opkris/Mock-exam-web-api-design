@@ -14,6 +14,7 @@ export class Create extends React.Component{
 
         //note: here dishId is ignored
         const payload = {day, name, price, allergies};
+        // const payload = {name, price, allergies};
 
         let response;
 

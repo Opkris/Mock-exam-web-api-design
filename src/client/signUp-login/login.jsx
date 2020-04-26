@@ -70,7 +70,7 @@ export class Login extends React.Component{
 
 
         return(
-            <div>
+            <div className="center">
                 <div>
                     <p>User Id:</p>
                     <input type="text"
@@ -90,7 +90,7 @@ export class Login extends React.Component{
 
                 {error}
 
-                <div className="btn" onClick={this.doLogIn} id="loginBtn">Log In</div>
+                <div className="btnLs" onClick={this.doLogIn} id="loginBtn">Log In</div>
                 <Link to={"/signup"}>Register</Link>
             </div>);
     }
