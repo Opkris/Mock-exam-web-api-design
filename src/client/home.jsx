@@ -23,7 +23,7 @@ export class Home extends React.Component {
 
     async fetchMeals() {
 
-        const url = "/api/books";
+        const url = "/api/meals";
 
         let response;
         let payload;
@@ -35,7 +35,7 @@ export class Home extends React.Component {
             //Network error: eg, wrong URL, no internet, etc.
             this.setState({
                 error: "ERROR when retrieving list of meals: " + err,
-                books: null
+                meals: null
             });
             return;
         }
@@ -48,14 +48,14 @@ export class Home extends React.Component {
         } else {
             this.setState({
                 error: "Issue with HTTP connection: status code " + response.status,
-                books: null
+                meals: null
             });
         }
     }
 
     deleteMeal = async (id) => {
 
-        const url = "/api/books/" + id;
+        const url = "/api/meals/" + id;
 
         let response;
 
@@ -103,14 +103,14 @@ export class Home extends React.Component {
                     </thead>
                     <tbody>
                     {this.state.meals.map(m =>
-                        <tr key={"key_" + m.id} className="oneBook" >
+                        <tr key={"key_" + m.id} className="oneMeal" >
                             <td>{m.name}</td>
                             <td>{m.price}</td>
                             <td>{m.allergies}</td>
 
                             {user ? (
                             <td>
-                                <Link to={"/edit?bookId=" + m.id}>
+                                <Link to={"/edit?dishId=" + m.id}>
                                 <button className="btn btnM" >
                                 <i className="fas fa-edit"></i>
                                 </button>

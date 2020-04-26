@@ -1,5 +1,5 @@
 import React from "react";
-import Book from "./dish";
+import Dish from "./dish";
 
 export class Create extends React.Component{
 
@@ -10,7 +10,7 @@ export class Create extends React.Component{
     onOk = async (name, price, allergies, dishId) => {
 
 
-        const url = "/api/books";
+        const url = "/api/meals";
 
         //note: here dishId is ignored
         const payload = {name, price, allergies};
@@ -38,7 +38,7 @@ export class Create extends React.Component{
         return(
             <div>
                 <h3>Create a New Meal</h3>
-                <Book
+                <Dish
                     name={""}
                     price={""}
                     allergies={""}

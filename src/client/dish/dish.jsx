@@ -52,15 +52,15 @@ class Dish extends React.Component {
         }
     };
 
-    onAuthorChange = (event) => {
+    onNameChange = (event) => {
         this.setState({name: event.target.value});
     };
 
-    onTitleChange = (event) => {
+    onPriceChange = (event) => {
         this.setState({price: event.target.value});
     };
 
-    onYearChange = (event) => {
+    onAllergiesChange = (event) => {
         this.setState({allergies: event.target.value});
     };
 
@@ -73,22 +73,22 @@ class Dish extends React.Component {
                     <input
                         placeholder={"type the meal you want to add"}
                         value={this.state.name}
-                        onChange={this.onAuthorChange} 
-                        className="bookInput"
+                        onChange={this.onNameChange}
+                        className="dishInput"
                     />
                     <div className="inputTitle">Price:</div>
                     <input
                         placeholder={"Price of the meal"}
                         value={this.state.price}
-                        onChange={this.onTitleChange}
-                        className="bookInput"
+                        onChange={this.onPriceChange}
+                        className="dishInput"
                     />
                     <div className="inputTitle">Allergies:</div>
                     <input
                         placeholder={"Type in allergies of the meal, if any"}
                         value={this.state.allergies}
-                        onChange={this.onYearChange}
-                        className="bookInput"
+                        onChange={this.onAllergiesChange}
+                        className="dishInput"
                     />
 
                     <button type="submit" className={"btn btnM"}>{this.ok}</button>

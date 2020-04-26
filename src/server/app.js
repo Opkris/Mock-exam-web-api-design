@@ -67,7 +67,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.get('/api/books', (req, res) => {
+app.get('/api/meals', (req, res) => {
 
     /*
         Read the query parameters, if any, eg:
@@ -88,7 +88,7 @@ app.get('/api/books', (req, res) => {
     Here we return a specific book with a specific id, eg
     "http://localhost:8080/books/42"
  */
-app.get('/api/books/:id', (req, res) => {
+app.get('/api/meals/:id', (req, res) => {
 
     const book = repository_monday.getMeal(req.params["id"]);
 
@@ -109,7 +109,7 @@ app.get('/api/books/:id', (req, res) => {
 /*
     Handle HTTP DELETE request on a book specified by id
  */
-app.delete('/api/books/:id', (req, res) => {
+app.delete('/api/meals/:id', (req, res) => {
 
     const deleted = repository_monday.deleteMeal(req.params.id);
     if (deleted) {
@@ -126,14 +126,14 @@ app.delete('/api/books/:id', (req, res) => {
     Such method should return the "location" header telling
     where such book can be retrieved (ie its URL)
  */
-app.post('/api/books', (req, res) => {
+app.post('/api/meals', (req, res) => {
 
     const dto = req.body;
 
     const id = repository_monday.createNewBook(dto.name, dto.price, dto.allergies);
 
     res.status(201); //created
-    res.header("location", "/api/books/" + id);
+    res.header("location", "/api/meals/" + id);
     res.send();
 });
 
@@ -142,7 +142,7 @@ app.post('/api/books', (req, res) => {
     Handle PUT request, which completely replace the resource
     with a new one
  */
-app.put('/api/books/:id', (req, res) => {
+app.put('/api/meals/:id', (req, res) => {
 
     if(req.params.id !== req.body.id){
         res.status(409);

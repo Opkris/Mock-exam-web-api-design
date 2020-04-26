@@ -11,22 +11,22 @@ export class Edit extends React.Component{
             error: null
         };
 
-        this.dishId = new URLSearchParams(window.location.search).get("bookId");
+        this.dishId = new URLSearchParams(window.location.search).get("dishId");
 
         if(this.dishId === null){
-            this.state.error = "Unspecified book id";
+            this.state.error = "Unspecified meal id";
         }
     }
 
     componentDidMount(){
         if(this.state.error === null) {
-            this.fetchBook();
+            this.fetchDish();
         }
     }
 
-    async fetchBook(){
+    async fetchDish(){
 
-        const url = "/api/books/" + this.dishId;
+        const url = "/api/meals/" + this.dishId;
 
         let response;
         let payload;
@@ -37,7 +37,7 @@ export class Edit extends React.Component{
         } catch (err) {
             //Network error: eg, wrong URL, no internet, etc.
             this.setState({
-                error: "ERROR when retrieving book: " + err,
+                error: "ERROR when retrieving meal: " + err,
                 dish: null
             });
             return;
@@ -60,7 +60,7 @@ export class Edit extends React.Component{
     onOk = async (name, price, allergies, id) => {
 
 
-        const url = "/api/books/"+id;
+        const url = "/api/meals/"+id;
 
         const payload = {id, name, price, allergies};
 
