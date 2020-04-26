@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require("express-session");
 const LocalStrategy = require('passport-local').Strategy;
-const repository_monday = require("./repository");
+const repository = require("./repository");
 const path = require('path');
 
 const authApi = require('./routes/auth-api');
@@ -69,18 +69,14 @@ app.use(passport.session());
 
 app.get('/api/meals', (req, res) => {
 
-    /*
-        Read the query parameters, if any, eg:
+        res.json(repository.getAllMeals());
+});
 
-        http://localhost:8080/api/books?since=2001
-     */
-    const since = req.query["since"];
 
-    if (since) {
-        res.json(repository_monday.getAllBooksSince(since));
-    } else {
-        res.json(repository_monday.getAllMeals());
-    }
+app.get('/api/drinks', (req, res) => {
+
+
+        res.json(repository.getAllDrinks());
 });
 
 /*
@@ -90,13 +86,13 @@ app.get('/api/meals', (req, res) => {
  */
 app.get('/api/meals/:id', (req, res) => {
 
-    const book = repository_monday.getMeal(req.params["id"]);
+    const meal = repository.getMeal(req.params["id"]);
 
-    if (!book) {
+    if (!meal) {
         res.status(404);
         res.send()
     } else {
-        res.json(book);
+        res.json(meal);
     }
     /*
         Either "send()" or "json()" needs to be called, otherwise the
@@ -106,12 +102,37 @@ app.get('/api/meals/:id', (req, res) => {
      */
 });
 
+app.get('/api/drinks/:id', (req, res) => {
+
+    const drink = repository.getDrink(req.params["id"]);
+
+    if (!drink) {
+        res.status(404);
+        res.send()
+    } else {
+        res.json(drink);
+    }
+
+});
+
 /*
     Handle HTTP DELETE request on a book specified by id
  */
 app.delete('/api/meals/:id', (req, res) => {
 
-    const deleted = repository_monday.deleteMeal(req.params.id);
+    const deleted = repository.deleteMeal(req.params.id);
+    if (deleted) {
+        res.status(204);
+    } else {
+        //this can happen if book already deleted or does not exist
+        res.status(404);
+    }
+    res.send();
+});
+
+app.delete('/api/drinks/:id', (req, res) => {
+
+    const deleted = repository.deleteDrink(req.params.id);
     if (deleted) {
         res.status(204);
     } else {
@@ -130,10 +151,22 @@ app.post('/api/meals', (req, res) => {
 
     const dto = req.body;
 
-    const id = repository_monday.createNewBook(dto.name, dto.price, dto.allergies);
+    const id = repository.createNewMeal(dto.day, dto.name, dto.price, dto.allergies);
 
     res.status(201); //created
     res.header("location", "/api/meals/" + id);
+    res.send();
+});
+
+
+app.post('/api/drinks', (req, res) => {
+
+    const dto = req.body;
+
+    const id = repository.createNewDrink(dto.name, dto.price,);
+
+    res.status(201); //created
+    res.header("location", "/api/drinks/" + id);
     res.send();
 });
 
@@ -150,12 +183,31 @@ app.put('/api/meals/:id', (req, res) => {
         return;
     }
 
-    const updated = repository_monday.updateMeal(req.body);
+    const updated = repository.updateMeal(req.body);
 
     if (updated) {
         res.status(204);
     } else {
         //this can happen if entity did not exist
+        res.status(404);
+    }
+    res.send();
+});
+
+
+app.put('/api/drinks/:id', (req, res) => {
+
+    if(req.params.id !== req.body.id){
+        res.status(409);
+        res.send();
+        return;
+    }
+
+    const updated = repository.updateDrink(req.body);
+
+    if (updated) {
+        res.status(204);
+    } else {
         res.status(404);
     }
     res.send();

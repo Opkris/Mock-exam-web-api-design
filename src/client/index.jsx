@@ -3,7 +3,9 @@ import ReactDOM from "react-dom";
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import {Create} from "./dish/create";
+import {CreateDrink} from "./drink/createDrink";
 import {Edit} from "./dish/edit";
+import {EditDrink} from "./drink/editDrink";
 import {Home} from "./home";
 import Login from "./signUp-login/login";
 import SignUp from "./signUp-login/signup";
@@ -14,31 +16,12 @@ class App extends React.Component {
 constructor(props) {
     super(props);
 
-    /*
-        As whether we are logged in or not will impact the rendering of
-        all pages, such state info as to be stored here in the root component.
-        If a user is logged in, then we store its data here.
-        A null value means the user is not logged in.
-     */
-
     this.state = {
         user: null,
         userCount: 1
     };
 }
 
-/*
-    Whether we are logged in or not depends on the session cookie.
-    That is what is sent to the server at each HTTP request.
-    If missing, we will get a 401 status code error.
-    It could happen that, when this component is mounted, there is
-    already a valid cookie.
-    A simple example is when we manually refresh the page from the browser:
-    the component will be re-mounted with new state (and so userId is null),
-    although we have a valid cookie.
-    So, here we do a AJAX call to the server. If such call is authenticated,
-    then will we get the user id, and so update the component's state.
- */
 componentDidMount() {
     this.fetchAndUpdateUserInfo();
 
@@ -131,19 +114,21 @@ render() {
 
                     <Route exact path="/login"
                            render={props => <Login {...props}
-                                                   fetchAndUpdateUserInfo={this.fetchAndUpdateUserInfo}/>}/>
+                           fetchAndUpdateUserInfo={this.fetchAndUpdateUserInfo}/>}/>
                     <Route exact path="/signup"
                            render={props => <SignUp {...props}
-                                                    fetchAndUpdateUserInfo={this.fetchAndUpdateUserInfo}/>}/>
+                            fetchAndUpdateUserInfo={this.fetchAndUpdateUserInfo}/>}/>
                     <Route exact path="/"
                            render={props => <Home {...props}
-                                                  user={this.state.user}
-                                                  userCount={this.state.userCount}
-                                                  fetchAndUpdateUserInfo={this.fetchAndUpdateUserInfo}/>}/>
+                          user={this.state.user}
+                          userCount={this.state.userCount}
+                          fetchAndUpdateUserInfo={this.fetchAndUpdateUserInfo}/>}/>
 
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/create" component={Create}/>
+                    <Route exact path="/createDrink" component={CreateDrink}/>
                     <Route exact path="/edit" component={Edit}/>
+                    <Route exact path="/editDrink" component={EditDrink}/>
                     <Route component={this.notFound}/>
                 </Switch>
             </div>

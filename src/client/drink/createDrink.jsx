@@ -1,19 +1,19 @@
 import React from "react";
-import Dish from "./dish";
+import Drink from "./drink";
 
-export class Create extends React.Component{
+export class CreateDrink extends React.Component{
 
     constructor(props){
         super(props);
     }
 
-    onOk = async (day, name, price, allergies, dishId) => {
+    onOk = async (name, price, drinkId) => {
 
 
-        const url = "/api/meals";
+        const url = "/api/drinks";
 
         //note: here dishId is ignored
-        const payload = {day, name, price, allergies};
+        const payload = {name, price};
 
         let response;
 
@@ -28,7 +28,6 @@ export class Create extends React.Component{
         } catch (err) {
             return false;
         }
-
         return response.status === 201;
     };
 
@@ -36,12 +35,10 @@ export class Create extends React.Component{
 
         return(
             <div>
-                <h3>Create a New Meal</h3>
-                <Dish
-                    day={""}
+                <h3>Create a New Drink</h3>
+                <Drink
                     name={""}
                     price={""}
-                    allergies={""}
                     ok={"Create"}
                     okCallback={this.onOk}
                 />

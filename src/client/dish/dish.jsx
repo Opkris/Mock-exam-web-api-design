@@ -8,9 +8,10 @@ class Dish extends React.Component {
         super(props);
 
         this.state = {
+            day: this.props.day ? this.props.day : "",
             name: this.props.name ? this.props.name : "",
             price: this.props.price ? this.props.price : "",
-            year: this.props.allergies ? this.props.allergies : ""
+            allergies: this.props.allergies ? this.props.allergies : ""
         };
 
         this.ok = this.props.ok ? this.props.ok : "Ok";
@@ -28,6 +29,7 @@ class Dish extends React.Component {
             here we make the call with AJAX, on which we have full control
          */
         const completed = await this.props.okCallback(
+            this.state.day,
             this.state.name,
             this.state.price,
             this.state.allergies,
@@ -52,6 +54,10 @@ class Dish extends React.Component {
         }
     };
 
+    onDayChange = (event) => {
+        this.setState({day: event.target.value});
+    };
+
     onNameChange = (event) => {
         this.setState({name: event.target.value});
     };
@@ -69,6 +75,14 @@ class Dish extends React.Component {
         return (
             <div>
                 <form onSubmit={this.onFormSubmit}>
+
+                    <div className="inputTitle">Day:</div>
+                    <input
+                        placeholder={"What day is the meal?"}
+                        value={this.state.day.toLocaleLowerCase()}
+                        onChange={this.onDayChange}
+                        className="dishInput"
+                    />
                     <div className="inputTitle">Name:</div>
                     <input
                         placeholder={"type the meal you want to add"}

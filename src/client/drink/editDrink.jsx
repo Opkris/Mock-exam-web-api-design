@@ -1,32 +1,33 @@
 import React from "react";
-import Dish from "./dish";
+import Dish from "../dish/dish";
+import Drink from "./drink";
 
-export class Edit extends React.Component{
+export class EditDrink extends React.Component{
 
     constructor(props){
         super(props);
 
         this.state = {
-            dish: null,
+            drink: null,
             error: null
         };
 
-        this.dishId = new URLSearchParams(window.location.search).get("dishId");
+        this.drinkId = new URLSearchParams(window.location.search).get("drinkId");
 
-        if(this.dishId === null){
-            this.state.error = "Unspecified meal id";
+        if(this.drinkId === null){
+            this.state.error = "Unspecified drink id";
         }
     }
 
     componentDidMount(){
         if(this.state.error === null) {
-            this.fetchDish();
+            this.fetchDrink();
         }
     }
 
-    async fetchDish(){
+    async fetchDrink(){
 
-        const url = "/api/meals/" + this.dishId;
+        const url = "/api/drinks/" + this.drinkId;
 
         let response;
         let payload;
@@ -37,8 +38,8 @@ export class Edit extends React.Component{
         } catch (err) {
             //Network error: eg, wrong URL, no internet, etc.
             this.setState({
-                error: "ERROR when retrieving meal: " + err,
-                dish: null
+                error: "ERROR when retrieving drink: " + err,
+                drink: null
             });
             return;
         }
@@ -46,23 +47,22 @@ export class Edit extends React.Component{
         if (response.status === 200) {
             this.setState({
                 error: null,
-                dish: payload
+                drink: payload
             });
         } else {
             this.setState({
                 error: "Issue with HTTP connection: status code " + response.status,
-                dish: null
+                drink: null
             });
         }
     }
 
 
-    onOk = async (day, name, price, allergies, id) => {
+    onOk = async (name, price, id) => {
 
+        const url = "/api/drinks/"+id;
 
-        const url = "/api/meals/"+id;
-
-        const payload = {id, day, name, price, allergies};
+        const payload = {id, name, price};
 
         let response;
 
@@ -87,24 +87,22 @@ export class Edit extends React.Component{
         if(this.state.error !== null){
             return(
                 <div>
-                    <p>Cannot edit Meal. {this.state.error}</p>
+                    <p>Cannot edit drink. {this.state.error}</p>
                 </div>
             );
         }
 
-        if(this.state.dish === null){
+        if(this.state.drink === null){
             return(<p>Loading...</p>);
         }
 
         return(
             <div>
-                <h3>Edit Dish</h3>
-                <Dish
-                    day={this.state.dish.day}
+                <h3>Edit drink</h3>
+                <Drink
                     name={this.state.dish.name}
                     price={this.state.dish.price}
-                    allergies={this.state.dish.allergies}
-                    dishId={this.dishId}
+                    drinkId={this.drinkId}
                     ok={"Update"}
                     okCallback={this.onOk}
                 />
