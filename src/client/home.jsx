@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from 'react-router-dom';
+import {Chat} from "./Chat";
 
 
 export class Home extends React.Component {
@@ -17,16 +18,13 @@ export class Home extends React.Component {
     componentDidMount() {
         this.fetchMeals();
         this.fetchDrinks();
+        // this.fetchMessages();
         if (this.props.user) {
             this.props.fetchAndUpdateUserInfo();
         }
+
     }
 
-    componentWillUnmount() {
-        if (this.socket) {
-            this.socket.close();
-        }
-    }
 
     async fetchMeals() {
 
@@ -141,13 +139,13 @@ export class Home extends React.Component {
     render() {
 
         const user = this.props.user;
-        let table;
         let table_monday;
         let table_tuesday;
         let table_wednesday;
         let table_thursday;
         let table_friday;
         let tableDrink;
+
 
         if (this.state.error !== null) {
             table_monday = <p>{this.state.error}</p>;
@@ -172,47 +170,6 @@ export class Home extends React.Component {
                     {this.state.meals.filter((day) => {
                         return day.day === 'monday'
                     }).map(m =>
-                        <tr key={"key_" + m.id} className="oneMeal">
-                            <td>{m.name}</td>
-                            <td>{m.price}</td>
-                            <td>{m.allergies}</td>
-
-                            {user ? (
-                                <td>
-                                    <Link to={"/edit?dishId=" + m.id}>
-                                        <button className="btn btnM">
-                                            <i className="fas fa-edit"></i>
-                                        </button>
-                                    </Link>
-                                    <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
-                                        <i className="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            ) : (
-                                <p></p>
-                            )}
-                        </tr>
-                    )}
-                    </tbody>
-                </table>
-
-            </div>; // end table
-            table = <div>
-                <table className="allMealsTest">
-                    <thead>
-                    <tr>
-                        <th>Meal(s)</th>
-                        <th>Price</th>
-                        <th>Allergies</th>
-                        {user ? (
-                            <th>Options</th>
-                        ) : (
-                            <p></p>
-                        )}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.meals.map(m =>
                         <tr key={"key_" + m.id} className="oneMeal">
                             <td>{m.name}</td>
                             <td>{m.price}</td>
@@ -464,6 +421,7 @@ export class Home extends React.Component {
 
         return (
             <div>
+
                 <div>
                     <h2>Sweet Escape Monday</h2>
                     {table_monday}
@@ -549,21 +507,10 @@ export class Home extends React.Component {
                     <p>
                     </p>
                 )}
-
-
-
-                <div>
-                    <h2>Sweet Escape Chat</h2>
+                <div className="chat">
+                    <h2>Chat</h2>
+                    <Chat/>
                 </div>
-                <div>
-                    <Link to={"/chat"}>
-                        <button className="btn btnM">New</button>
-                    </Link>
-                </div>
-
-
-
-
             </div>
 
         );// end return

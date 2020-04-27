@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import {Create} from "./dish/create";
-import {Chat} from "./chat";
 import {CreateDrink} from "./drink/createDrink";
 import {Edit} from "./dish/edit";
 import {EditDrink} from "./drink/editDrink";
@@ -11,6 +10,7 @@ import {Home} from "./home";
 import Login from "./signUp-login/login";
 import SignUp from "./signUp-login/signup";
 import HeaderBar from "./headerbar";
+import {Chat} from "./Chat";
 
 class App extends React.Component {
 

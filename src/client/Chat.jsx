@@ -1,4 +1,6 @@
 import React from "react";
+import {withRouter} from 'react-router-dom';
+
 
 export class Chat extends React.Component {
 
@@ -10,13 +12,13 @@ export class Chat extends React.Component {
             text: "",
             messages: null
         };
-
-
-    }
+    };
 
     componentDidMount() {
         this.fetchMessages();
-
+        if (this.props.user) {
+            this.props.fetchAndUpdateUserInfo();
+        }
         this.socket = new WebSocket("ws://" + window.location.host);
 
         this.socket.onmessage = (event => {
@@ -36,7 +38,7 @@ export class Chat extends React.Component {
     }
 
     componentWillUnmount() {
-        if(this.socket){
+        if (this.socket) {
             this.socket.close();
         }
     }
@@ -117,7 +119,6 @@ export class Chat extends React.Component {
         }
     };
 
-
     render() {
 
         let messages = <div></div>;
@@ -132,7 +133,6 @@ export class Chat extends React.Component {
 
         return (
             <div>
-                <h2>WebSocket-based Chat</h2>
                 <div>
                     <p className="inputName">Your name:</p>
                     <input type="text"
@@ -154,9 +154,12 @@ export class Chat extends React.Component {
                 </div>
                 <br/>
 
-                <div id="sendBtnId" className="btn" onClick={this.sendMsg}>Send</div>
+                <button id="sendBtnId" className="btn btnChat" onClick={this.sendMsg}>Send</button>
                 {messages}
             </div>
-        );
+
+        );// end return
     }
 }
+
+export default withRouter(Chat);

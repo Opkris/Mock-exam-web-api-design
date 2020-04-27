@@ -72,7 +72,7 @@ th{
     justify-content: space-evenly;
 }
 .center{
-    margin-top: 200px;
+    margin-top: 100px;
     margin-left: 45%;
     text-align: center;
     top: 500px;
@@ -101,17 +101,6 @@ th{
     float: left;
     margin: 30px;
 }
-
-/*.index {*/
-/*    float: left;*/
-/*    font-size: 12px;*/
-/*    text-align: center;*/
-/*    width: 30px;*/
-/*    border: 1px solid transparent;*/
-/*    margin-right: -1px;*/
-/*    margin-top: -1px;*/
-/*}*/
-
 
 .btnPart {
     display: inline-flex;
@@ -206,4 +195,14 @@ th{
     display: inline-block;
     margin-left: 10px;
 }
+.chat{
+    text-align: center;
+    place-items: center;
+    width: 100%;
+    height: 20%;
+    border-top: 2px solid goldenrod;
 
+}
+.btnChat{
+    height: 30px;
+}
