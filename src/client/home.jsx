@@ -11,15 +11,20 @@ export class Home extends React.Component {
             drinks: null,
             meals: null,
             error: null,
-
         };
     }
 
     componentDidMount() {
         this.fetchMeals();
         this.fetchDrinks();
-        if(this.props.user) {
+        if (this.props.user) {
             this.props.fetchAndUpdateUserInfo();
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.socket) {
+            this.socket.close();
         }
     }
 
@@ -135,14 +140,14 @@ export class Home extends React.Component {
 
     render() {
 
+        const user = this.props.user;
+        let table;
         let table_monday;
         let table_tuesday;
         let table_wednesday;
         let table_thursday;
         let table_friday;
-        // let table;
         let tableDrink;
-        const user = this.props.user;
 
         if (this.state.error !== null) {
             table_monday = <p>{this.state.error}</p>;
@@ -157,35 +162,76 @@ export class Home extends React.Component {
                         <th>Price</th>
                         <th>Allergies</th>
                         {user ? (
-                        <th>Options</th>
+                            <th>Options</th>
                         ) : (
                             <p></p>
                         )}
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.meals.filter((day) =>{
-                        return day.day ==='monday'
-                    }).map(m=>
-                        <tr key={"key_" + m.id} className="oneMeal" >
+                    {this.state.meals.filter((day) => {
+                        return day.day === 'monday'
+                    }).map(m =>
+                        <tr key={"key_" + m.id} className="oneMeal">
                             <td>{m.name}</td>
                             <td>{m.price}</td>
                             <td>{m.allergies}</td>
 
                             {user ? (
-                            <td>
-                                <Link to={"/edit?dishId=" + m.id}>
-                                <button className="btn btnM" >
-                                <i className="fas fa-edit"></i>
-                                </button>
-                                </Link>
-                                <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
-                                <i className="fas fa-trash"></i>
-                                </button>
+                                <td>
+                                    <Link to={"/edit?dishId=" + m.id}>
+                                        <button className="btn btnM">
+                                            <i className="fas fa-edit"></i>
+                                        </button>
+                                    </Link>
+                                    <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
+                                        <i className="fas fa-trash"></i>
+                                    </button>
                                 </td>
-                                ) : (
+                            ) : (
                                 <p></p>
-                                )}
+                            )}
+                        </tr>
+                    )}
+                    </tbody>
+                </table>
+
+            </div>; // end table
+            table = <div>
+                <table className="allMealsTest">
+                    <thead>
+                    <tr>
+                        <th>Meal(s)</th>
+                        <th>Price</th>
+                        <th>Allergies</th>
+                        {user ? (
+                            <th>Options</th>
+                        ) : (
+                            <p></p>
+                        )}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.meals.map(m =>
+                        <tr key={"key_" + m.id} className="oneMeal">
+                            <td>{m.name}</td>
+                            <td>{m.price}</td>
+                            <td>{m.allergies}</td>
+
+                            {user ? (
+                                <td>
+                                    <Link to={"/edit?dishId=" + m.id}>
+                                        <button className="btn btnM">
+                                            <i className="fas fa-edit"></i>
+                                        </button>
+                                    </Link>
+                                    <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
+                                        <i className="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            ) : (
+                                <p></p>
+                            )}
                         </tr>
                     )}
                     </tbody>
@@ -201,35 +247,35 @@ export class Home extends React.Component {
                         <th>Price</th>
                         <th>Allergies</th>
                         {user ? (
-                        <th>Options</th>
+                            <th>Options</th>
                         ) : (
                             <p></p>
                         )}
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.meals.filter((day) =>{
-                        return day.day ==='tuesday'
-                    }).map(m=>
-                        <tr key={"key_" + m.id} className="oneMeal" >
+                    {this.state.meals.filter((day) => {
+                        return day.day === 'tuesday'
+                    }).map(m =>
+                        <tr key={"key_" + m.id} className="oneMeal">
                             <td>{m.name}</td>
                             <td>{m.price}</td>
                             <td>{m.allergies}</td>
 
                             {user ? (
-                            <td>
-                                <Link to={"/edit?dishId=" + m.id}>
-                                <button className="btn btnM" >
-                                <i className="fas fa-edit"></i>
-                                </button>
-                                </Link>
-                                <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
-                                <i className="fas fa-trash"></i>
-                                </button>
+                                <td>
+                                    <Link to={"/edit?dishId=" + m.id}>
+                                        <button className="btn btnM">
+                                            <i className="fas fa-edit"></i>
+                                        </button>
+                                    </Link>
+                                    <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
+                                        <i className="fas fa-trash"></i>
+                                    </button>
                                 </td>
-                                ) : (
+                            ) : (
                                 <p></p>
-                                )}
+                            )}
                         </tr>
                     )}
                     </tbody>
@@ -245,35 +291,35 @@ export class Home extends React.Component {
                         <th>Price</th>
                         <th>Allergies</th>
                         {user ? (
-                        <th>Options</th>
+                            <th>Options</th>
                         ) : (
                             <p></p>
                         )}
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.meals.filter((day) =>{
-                        return day.day ==='wednesday'
-                    }).map(m=>
-                        <tr key={"key_" + m.id} className="oneMeal" >
+                    {this.state.meals.filter((day) => {
+                        return day.day === 'wednesday'
+                    }).map(m =>
+                        <tr key={"key_" + m.id} className="oneMeal">
                             <td>{m.name}</td>
                             <td>{m.price}</td>
                             <td>{m.allergies}</td>
 
                             {user ? (
-                            <td>
-                                <Link to={"/edit?dishId=" + m.id}>
-                                <button className="btn btnM" >
-                                <i className="fas fa-edit"></i>
-                                </button>
-                                </Link>
-                                <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
-                                <i className="fas fa-trash"></i>
-                                </button>
+                                <td>
+                                    <Link to={"/edit?dishId=" + m.id}>
+                                        <button className="btn btnM">
+                                            <i className="fas fa-edit"></i>
+                                        </button>
+                                    </Link>
+                                    <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
+                                        <i className="fas fa-trash"></i>
+                                    </button>
                                 </td>
-                                ) : (
+                            ) : (
                                 <p></p>
-                                )}
+                            )}
                         </tr>
                     )}
                     </tbody>
@@ -289,35 +335,35 @@ export class Home extends React.Component {
                         <th>Price</th>
                         <th>Allergies</th>
                         {user ? (
-                        <th>Options</th>
+                            <th>Options</th>
                         ) : (
                             <p></p>
                         )}
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.meals.filter((day) =>{
-                        return day.day ==='thursday'
-                    }).map(m=>
-                        <tr key={"key_" + m.id} className="oneMeal" >
+                    {this.state.meals.filter((day) => {
+                        return day.day === 'thursday'
+                    }).map(m =>
+                        <tr key={"key_" + m.id} className="oneMeal">
                             <td>{m.name}</td>
                             <td>{m.price}</td>
                             <td>{m.allergies}</td>
 
                             {user ? (
-                            <td>
-                                <Link to={"/edit?dishId=" + m.id}>
-                                <button className="btn btnM" >
-                                <i className="fas fa-edit"></i>
-                                </button>
-                                </Link>
-                                <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
-                                <i className="fas fa-trash"></i>
-                                </button>
+                                <td>
+                                    <Link to={"/edit?dishId=" + m.id}>
+                                        <button className="btn btnM">
+                                            <i className="fas fa-edit"></i>
+                                        </button>
+                                    </Link>
+                                    <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
+                                        <i className="fas fa-trash"></i>
+                                    </button>
                                 </td>
-                                ) : (
+                            ) : (
                                 <p></p>
-                                )}
+                            )}
                         </tr>
                     )}
                     </tbody>
@@ -333,35 +379,35 @@ export class Home extends React.Component {
                         <th>Price</th>
                         <th>Allergies</th>
                         {user ? (
-                        <th>Options</th>
+                            <th>Options</th>
                         ) : (
                             <p></p>
                         )}
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.meals.filter((day) =>{
-                        return day.day ==='friday'
-                    }).map(m=>
-                        <tr key={"key_" + m.id} className="oneMeal" >
+                    {this.state.meals.filter((day) => {
+                        return day.day === 'friday'
+                    }).map(m =>
+                        <tr key={"key_" + m.id} className="oneMeal">
                             <td>{m.name}</td>
                             <td>{m.price}</td>
                             <td>{m.allergies}</td>
 
                             {user ? (
-                            <td>
-                                <Link to={"/edit?dishId=" + m.id}>
-                                <button className="btn btnM" >
-                                <i className="fas fa-edit"></i>
-                                </button>
-                                </Link>
-                                <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
-                                <i className="fas fa-trash"></i>
-                                </button>
+                                <td>
+                                    <Link to={"/edit?dishId=" + m.id}>
+                                        <button className="btn btnM">
+                                            <i className="fas fa-edit"></i>
+                                        </button>
+                                    </Link>
+                                    <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
+                                        <i className="fas fa-trash"></i>
+                                    </button>
                                 </td>
-                                ) : (
+                            ) : (
                                 <p></p>
-                                )}
+                            )}
                         </tr>
                     )}
                     </tbody>
@@ -369,57 +415,11 @@ export class Home extends React.Component {
 
             </div>; // end table
 
-            // table = <div>
-            //     <table className="allMeals">
-            //         <thead>
-            //         <tr>
-            //             <th>Day</th>
-            //             <th>Meal(s)</th>
-            //             <th>Price</th>
-            //             <th>Allergies</th>
-            //             {user ? (
-            //             <th>Options</th>
-            //             ) : (
-            //                 <p></p>
-            //             )}
-            //         </tr>
-            //         </thead>
-            //         <tbody>
-            //         {this.state.meals.map(m=>
-            //             <tr key={"key_" + m.id} className="oneMeal" >
-            //                 <td>{m.day}</td>
-            //                 <td>{m.name}</td>
-            //                 <td>{m.price}</td>
-            //                 <td>{m.allergies}</td>
-            //
-            //                 {user ? (
-            //                 <td>
-            //                     <Link to={"/edit?dishId=" + m.id}>
-            //                     <button className="btn btnM" >
-            //                     <i className="fas fa-edit"></i>
-            //                     </button>
-            //                     </Link>
-            //                     <button className="btn btnM" onClick={_ => this.deleteMeal(m.id)}>
-            //                     <i className="fas fa-trash"></i>
-            //                     </button>
-            //                     </td>
-            //                     ) : (
-            //                     <p></p>
-            //                     )}
-            //             </tr>
-            //         )}
-            //         </tbody>
-            //     </table>
-            //
-            // </div>; // end table
-
-
-
         }// end else
 
-        if (this.state.drinks === null || this.state.drinks.length === 0){
+        if (this.state.drinks === null || this.state.drinks.length === 0) {
             tableDrink = <p>There is no Drink registered in the database</p>
-        } else{
+        } else {
             tableDrink = <div>
                 <table className="allDrinks">
                     <thead>
@@ -435,14 +435,14 @@ export class Home extends React.Component {
                     </thead>
                     <tbody>
                     {this.state.drinks.map(d =>
-                        <tr key={"key_" + d.id} className="oneMeal" >
+                        <tr key={"key_" + d.id} className="oneMeal">
                             <td>{d.name}</td>
                             <td>{d.price}</td>
 
                             {user ? (
                                 <td>
                                     <Link to={"/edit?DrinkId=" + d.id}>
-                                        <button className="btn btnM" >
+                                        <button className="btn btnM">
                                             <i className="fas fa-edit"></i>
                                         </button>
                                     </Link>
@@ -461,12 +461,12 @@ export class Home extends React.Component {
             </div>; // end table
         }
 
-        return (
 
+        return (
             <div>
                 <div>
                     <h2>Sweet Escape Monday</h2>
-                     {table_monday}
+                    {table_monday}
                 </div>
                 {user ? (
                     <div>
@@ -480,7 +480,7 @@ export class Home extends React.Component {
                 )}
                 <div>
                     <h2>Sweet Escape Tuesday</h2>
-                     {table_tuesday}
+                    {table_tuesday}
                 </div>
                 {user ? (
                     <div>
@@ -494,7 +494,7 @@ export class Home extends React.Component {
                 )}
                 <div>
                     <h2>Sweet Escape Wednesday</h2>
-                     {table_wednesday}
+                    {table_wednesday}
                 </div>
                 {user ? (
                     <div>
@@ -508,7 +508,7 @@ export class Home extends React.Component {
                 )}
                 <div>
                     <h2>Sweet Escape Thursday</h2>
-                     {table_thursday}
+                    {table_thursday}
                 </div>
                 {user ? (
                     <div>
@@ -521,8 +521,8 @@ export class Home extends React.Component {
                     </p>
                 )}
                 <div>
-                    <h2>Sweet Escape friday</h2>
-                     {table_friday}
+                    <h2>Sweet Escape Friday</h2>
+                    {table_friday}
                 </div>
                 {user ? (
                     <div>
@@ -549,8 +549,22 @@ export class Home extends React.Component {
                     <p>
                     </p>
                 )}
-            </div>
 
+
+
+                <div>
+                    <h2>Sweet Escape Chat</h2>
+                </div>
+                <div>
+                    <Link to={"/chat"}>
+                        <button className="btn btnM">New</button>
+                    </Link>
+                </div>
+
+
+
+
+            </div>
 
         );// end return
     }// end render

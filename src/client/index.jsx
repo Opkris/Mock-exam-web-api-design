@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import {Create} from "./dish/create";
+import {Chat} from "./chat";
 import {CreateDrink} from "./drink/createDrink";
 import {Edit} from "./dish/edit";
 import {EditDrink} from "./drink/editDrink";
@@ -125,10 +126,11 @@ render() {
                           fetchAndUpdateUserInfo={this.fetchAndUpdateUserInfo}/>}/>
 
                     <Route exact path="/" component={Home}/>
-                    <Route exact path="/create" component={Create}/>
-                    <Route exact path="/createDrink" component={CreateDrink}/>
                     <Route exact path="/edit" component={Edit}/>
+                    <Route exact path="/chat" component={Chat}/>
+                    <Route exact path="/create" component={Create}/>
                     <Route exact path="/editDrink" component={EditDrink}/>
+                    <Route exact path="/createDrink" component={CreateDrink}/>
                     <Route component={this.notFound}/>
                 </Switch>
             </div>

@@ -200,6 +200,10 @@ th{
 }
 .homeText{
     color: white;
+}
 
+.inputName{
+    display: inline-block;
+    margin-left: 10px;
 }
 
