@@ -3,6 +3,17 @@ i need to explain what my project does, how it is structured, how i implemented 
  
  its a "pitch sale"
  
+ ### Gotcha game
+ I have created a Gotcha game, its a collection of 21 unique pokemons with there own unique name
+ and they all have a price / value, and a short description for what type of pokemon they are.
+ the purpose is of course, catch them all.
+ 
+ They way you can do can catch them is simple, every new user start the game with some money they
+ can use, the money can be used to by some loot boxes and catch "new" pokèmon's. Every loot box will
+ contain 3 random pokèmon's, that means that you can get 3 different pokèmon's or 3 of the same, there 
+ are no limit of how many pokèmon's you can have, or how many of the same pokèmon.
+  
+ 
  
   If you do not attempt to do some of the parts/tasks of this exam, you MUST state so in the “readme.md”
   file, e.g., “I did requirements R1, R2 and partially R3. Did not manage to do R4. Did T1 and T2, but not T3
@@ -17,48 +28,46 @@ Furthermore, in the readme.md you also MUST have the following:
   zip file.
      
 ## *my application have the following features.*
- - [ ] start with command "yarn dev" or "yarn Start"
- - [ ] accessible at "http://localhost:8080/"
- - [ ] NodeJS
- - [ ] NOT rely on any external services / fake it, use memory object's
+ - [X] start with command "yarn dev" or "yarn Start"
+ - [X] accessible at "http://localhost:8080/"
+ - [X] NodeJS
+ - [X] NOT rely on any external services / fake it, use memory object's
  - [ ] 
  - [ ]
  
  
- #
+
  
-### R1: Necessary but not sufficient requirement to get at least an E
--[ ] Write a home page with React.
--[ ] At least 2 other React pages that can be accessed via React-Router.
--[ ] At least one page should have some “state”, whose change should be triggerable from the GUI
+### R1:
+-[X] Write a home page with React.
+-[X] At least 2 other React pages that can be accessed via React-Router.
+-[X] At least one page should have some “state”, whose change should be triggerable from the GUI
      (i.e., there should be some actions for which a React component should be re-rendered and
      produce different HTML).
--[ ] From each page, it should be possible to go back to the homepage without having to use the
+-[X] From each page, it should be possible to go back to the homepage without having to use the
      “Back” button in the browser. In other words, do not have pages in which, once reached, it is not
      possible to navigate out of them. Example: if you are displaying a list of items, and then you have
      a link to a page to display the details of a specific item, then from such page there should be a link
      back (or at least to the homepage).
-    
-    
-   
-### R2: Necessary but not sufficient requirements to get at least a D
--[ ] Create a RESTful API handling at least one GET, one POST, one PUT and one DELETE (besides the
+       
+### R2:
+-[X] Create a RESTful API handling at least one GET, one POST, one PUT and one DELETE (besides the
      ones for authentication/authorization of users), using JSON as data transfer format. Note: you
      MUST have those endpoints even if they are not used by the frontend. 
--[ ] The REST API MUST follow the best practices for API design (e.g., on the naming conventions of
+-[X] The REST API MUST follow the best practices for API design (e.g., on the naming conventions of
      the endpoints).
--[ ] The frontend MUST use such API (e.g., using fetch).
+-[X] The frontend MUST use such API (e.g., using fetch).
 
 
-### R3: Necessary but not sufficient requirements to get at least a C
--[ ] You need to handle authentication/authorization, which MUST be session-based via cookies (as
-    seen in class).
--[ ] In the frontend, provide a page to login. Whether to also provide a signup page (or already existing
-    users in the fake-database) will depend on the application topic (more on this later).
--[ ] A logged-in user should get displayed a welcome message
+### R3:
+-[X] You need to handle authentication/authorization, which MUST be session-based via cookies (as
+     seen in class).
+-[X] In the frontend, provide a page to login. Whether to also provide a signup page (or already existing
+     users in the fake-database) will depend on the application topic (more on this later).
+-[X] A logged-in user should get displayed a welcome message
 
 
-### R4: Necessary but not sufficient requirements to get at least a B
+### R4: 
 -[ ] Each REST endpoint MUST handle authentication (401), and possibly authorization (403) checks.
     If an endpoint is supposed to be “open” to everyone, explicitly add a code-comment for it in its
     Express handler.
@@ -92,10 +101,13 @@ Furthermore, in the readme.md you also MUST have the following:
      
 -[x] T3 (grade C): There should be a page in which a logged-in user can see his/her collection (which
      will be empty at the beginning).
- * Every one have a unique name, but all users share the same "list" of items. 
+ * Every one have a unique name, but all users share the same "list" of items. eg. if 5 user play, and 
+    all of them buy max numbers of  loot boxes, that will mean 5(loot boxes each) * 5 (user) = 25 loot boxes,
+     25 * 3 (3 items in each) = 75 items that they share...  
  
 -[x] T4 (grade C): A user, when s/he creates a new account, should get t loot-boxes (e.g., t=3). There
-     should be a button to be able to redeem loot-boxes, one at a time (and the content of the lootbox must be displayed somehow to the user once opened). The new items will be added to the
+     should be a button to be able to redeem loot-boxes, one at a time (and the content of the lootbox
+      must be displayed somehow to the user once opened). The new items will be added to the
      collection of the user (which then should be able to see how many duplicates s/he has, and what
      s/he is still missing).
  * every new user starts with a balance (1000,-) so they can by a 5 new loot boxes, each loot box contains
