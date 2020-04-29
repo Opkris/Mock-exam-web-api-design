@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {BrowserRouter, Switch, Route} from 'react-router-dom'
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
+
 
 import {Home} from "./home";
 import Login from "./login";
@@ -24,7 +25,7 @@ export class App extends React.Component {
         this.fetchAndUpdateUserInfo();
     }
 
-        fetchAndUpdateUserInfo = async () => {
+    fetchAndUpdateUserInfo = async () => {
 
         const url = "/api/user";
 

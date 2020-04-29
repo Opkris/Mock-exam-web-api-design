@@ -251,3 +251,4 @@ export class Home extends React.Component {
         );// end return
     }// end render
 }
+export default withRouter(Home);

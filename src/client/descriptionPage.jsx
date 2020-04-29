@@ -102,3 +102,5 @@ export class DescriptionPage extends React.Component {
         );// end return
     }// end render
 }
+
+export default withRouter(DescriptionPage);

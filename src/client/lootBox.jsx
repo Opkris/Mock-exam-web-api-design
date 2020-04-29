@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import HeaderBar from "./headerbar";
 
 
@@ -193,3 +193,4 @@ export class LootBox extends React.Component {
     }// end render
 }// end class
 
+export default withRouter(LootBox);
