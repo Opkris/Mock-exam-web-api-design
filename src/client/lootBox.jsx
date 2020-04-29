@@ -1,14 +1,15 @@
 import React from "react";
+import {Link} from 'react-router-dom';
 import HeaderBar from "./headerbar";
-import {Link, withRouter} from 'react-router-dom';
 
-export class Home extends React.Component {
+
+export class LootBox extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            sendTo: "",
-            amountToSend: "",
+            sendTo: "Bank",
+            amountToSend: "200",
             balance: null,
             pokemon: null,
             errorMsg: null
@@ -16,13 +17,14 @@ export class Home extends React.Component {
     }
 
     componentDidMount() {
+        this.transferMoney();
         this.fetchPokemon();
         this.updateBalance();
     }
 
     async fetchPokemon() {
 
-        let url = '/api/myPokemons';
+        let url = '/api/randomPokemons';
 
         let response;
         let payload;
@@ -51,48 +53,14 @@ export class Home extends React.Component {
             });
         }
     }
-
-    salePokemon = async (id) => {
-
-        const url = "/api/pokemon/" + id;
-
-        let response;
-
-        try {
-            response = await fetch(url, {method: "delete"});
-        } catch (err) {
-            alert("Delete operation failed: " + err + " daimn");
-            return false;
-        }
-
-        if (response.status !== 204) {
-            alert(" !204 Delete operation failed: status code " + response.status);
-            return false;
-        }
-
-        this.fetchPokemon();
-
-        return true;
-    };
-
-
-
-
-
-
-
-
-
-
-
-
-    onSendToChange = (event) => {
-        this.setState({sendTo: event.target.value});
-    };
-
-    onAmountToSendChange = (event) => {
-        this.setState({amountToSend: event.target.value});
-    };
+    //
+    // onSendToChange = (event) => {
+    //     this.setState({sendTo: event.target.value});
+    // };
+    //
+    // onAmountToSendChange = (event) => {
+    //     this.setState({amountToSend: event.target.value});
+    // };
 
     transferMoney = async () => {
         if (!this.props.userId) {
@@ -172,35 +140,17 @@ export class Home extends React.Component {
         }
     }
 
-    dontShowLootBox() {
-        return(
-          <p></p>
-        );
-    }
-
-    showLootBox() {
-        return(
-            <div>
-                <Link to={"/lootBox"}>
-                    <button className="btn btnM">
-                        <i className="fas fa-box"></i>
-                    </button>
-                </Link>
-            </div>
-        );
-    }
 
     render() {
-        let table;
-        let content;
+
+        let tableUser;
 
         if (this.state.error !== null) {
-            table = <p>{this.state.error}</p>;
+            tableUser = <p>{this.state.error}</p>;
         } else if (this.state.pokemon === null || this.state.pokemon.length === 0) {
-            table = <p>There is no Pokèmon registered in the database</p>;
+            tableUser = <p>There is no Pokèmon registered in the database</p>;
         } else {
-
-            table = <div>
+            tableUser = <div>
                 <table className="allPokemons">
                     <thead>
                     <tr>
@@ -215,39 +165,31 @@ export class Home extends React.Component {
                             <td>{m.name}</td>
                             <td>{m.price}</td>
                             <td>{m.type}</td>
-                            <td>
-                                <button className="btn btnM" onClick={_ => this.salePokemon(m.id)}>
-                                    <i className="fas fa-trash"></i>
-                                </button>
-                            </td>
                         </tr>
-
                     )}
                     </tbody>
                 </table>
 
             </div>; // end table
         }
-
-        if (this.state.balance < 100) {
-            content = this.dontShowLootBox();
-        } else {
-            content = this.showLootBox();
-        }
-
         return (
-
 
             <div>
                 <HeaderBar
                     userId={this.props.userId}
-                />
-                <p>Your balance is currently: {this.state.balance}</p>
-                <h2>Your Pokèmon's</h2>
-                {content}
-                {table}
+                    updateLoggedInUserId={this.props.updateLoggedInUserId}/>
+                <h2>You Gotcha: </h2>
+                {tableUser}
+                <div>
+                    <Link to={"/home"}>
+                        <button className="btn btnM">
+                            Loot
+                        </button>
+                    </Link>
+                </div>
             </div>
 
         );// end return
     }// end render
-}
+}// end class
+

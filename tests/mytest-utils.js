@@ -1,5 +1,8 @@
 // Origin: shared/mytest-utils.js
 
+import {withRouter} from "react-router-dom";
+import {Login} from "../src/client/login";
+
 const request = require('supertest');
 
 

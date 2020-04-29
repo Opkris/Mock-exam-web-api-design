@@ -7,21 +7,21 @@ const {overrideFetch, asyncCheckCondition} = require('../mytest-utils');
 const {app} = require('../../src/server/app');
 
 const notLoggedInMsg = 'You are not logged in';
-//
-// test("Test not logged in", async () => {
-//
-//     const userId = null;
-//     const updateLoggedInUser = () => {};
-//
-//     const driver = mount(
-//        <MemoryRouter initialEntries={['/home']}>
-//             <HeaderBar  userId={userId} updateLoggedInUser={updateLoggedInUser} />
-//        </MemoryRouter>
-//     );
-//
-//     const html = driver.html();
-//     expect(html.includes(notLoggedInMsg)).toEqual(true);
-// });
+
+test("Test not logged in", async () => {
+
+    const userId = null;
+    const updateLoggedInUser = () => {};
+
+    const driver = mount(
+       <MemoryRouter initialEntries={['/home']}>
+            <HeaderBar  userId={userId} updateLoggedInUser={updateLoggedInUser} />
+       </MemoryRouter>
+    );
+
+    const html = driver.html();
+    expect(html.includes(notLoggedInMsg)).toEqual(true);
+});
 
 
 test("Test logged in", async () => {

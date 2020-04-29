@@ -5,8 +5,8 @@ const {MemoryRouter} = require('react-router-dom');
 const {overrideFetch, asyncCheckCondition} = require('../mytest-utils');
 const {app} = require('../../src/server/app');
 
-const {Login} = require('../../src/client/signUp-login/login');
-const {resetAllUsers, getUser, createUser} = require('../../src/server/db/users');
+const {Login} = require('../../src/client/login');
+const {resetAllUsers, getUser, createUser} = require('../../src/server/repository');
 
 beforeEach(resetAllUsers);
 

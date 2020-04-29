@@ -1,126 +1,149 @@
 const request = require('supertest');
-const {app} = require('../../src/server/app');
-const rep = require('../../src/server/repository');
+const app = require('../../src/server/app');
 
-beforeEach(() => {rep.initWithSomeMeals();});
 
-test("Test get all", async () =>{
+let counter = 0;
 
-    /*
-        request(app) will start the application on an ephemeral port, if not already started.
-        The "get" will do an actual HTTP call toward such running server.
-        These tests must be async, as the tests and the backend API are running on the same
-        event-loop thread
-     */
 
-    const response = await request(app).get('/api/meals');
+test("Test fail login", async () =>{
+
+    const response = await request(app)
+        .post('/api/login')
+        .send({userId:'foo_' + (counter++), password:"bar"})
+        .set('Content-Type', 'application/json');
+
+    expect(response.statusCode).toBe(401);
+});
+
+
+test("Test fail access data of non-existent user", async () =>{
+
+    const response = await request(app)
+        .get('/api/user');
+
+    expect(response.statusCode).toBe(401);
+});
+
+
+test("Test create user, but fail get data", async () =>{
+
+    const userId = 'foo_' + (counter++);
+
+    let response = await request(app)
+        .post('/api/signup')
+        .send({userId, password:"bar"})
+        .set('Content-Type', 'application/json');
+
+    expect(response.statusCode).toBe(201);
+
+
+    //no use of cookies here, so auth fails
+    response = await request(app)
+        .get('/api/user');
+
+    expect(response.statusCode).toBe(401);
+});
+
+test("Test create user and get data", async () =>{
+
+    const userId = 'foo_' + (counter++);
+
+    //use same cookie jar for the HTTP requests
+    const agent = request.agent(app);
+
+    let response = await agent
+        .post('/api/signup')
+        .send({userId, password:"bar"})
+        .set('Content-Type', 'application/json');
+
+    expect(response.statusCode).toBe(201);
+
+
+    //using same cookie got from previous HTTP call
+    response = await agent.get('/api/user');
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.length).toBe(15);
+    expect(response.body.userId).toBe(userId);
+    expect(response.body.balance).toBe(1000);
+    //don't really want to return the password...
+    expect(response.body.password).toBeUndefined();
 });
 
 
-test("Test not found meal", async () => {
+test("Test create user, login in a different session and get data", async () =>{
 
-    const response = await request(app).get('/api/meals/-3');
-    expect(response.statusCode).toBe(404);
-});
+    const userId = 'foo_' + (counter++);
 
-
-test("Test retrieve each single meal", async () => {
-
-    const responseAll = await request(app).get('/api/meals');
-    expect(responseAll.statusCode).toBe(200);
-
-    const meals = responseAll.body;
-    expect(meals.length).toBe(15);
-
-    for(let i=0; i<meals.length; i++){
-
-        const res = await request(app).get('/api/meals/'+meals[i].id);
-        const meal = res.body;
-
-        expect(meal.title).toBe(meals[i].title)
-    }
-});
-
-
-test("Test create meal", async () => {
-
-    let responseAll = await request(app).get('/api/meals');
-    const n = responseAll.body.length;
-
-    const name = "foo";
-
-    const resPost = await request(app)
-        .post('/api/meals')
-        .send({day:"monday", name: name, price:"42,-", allergies: "G, SM, HG"})
+    //create user, but ignore cookie set with the HTTP response
+    let response = await request(app)
+        .post('/api/signup')
+        .send({userId, password:"bar"})
         .set('Content-Type', 'application/json');
-
-    expect(resPost.statusCode).toBe(201);
-    const location = resPost.header.location;
-
-    //should had been increased by 1
-    responseAll = await request(app).get('/api/meals');
-    expect(responseAll.body.length).toBe(n + 1);
-
-    const resGet = await request(app).get(location);
-    expect(resGet.statusCode).toBe(200);
-    expect(resGet.body.name).toBe(name);
-});
+    expect(response.statusCode).toBe(201);
 
 
-test("Delete all meals", async () =>{
+    //use new cookie jar for the HTTP requests
+    const agent = request.agent(app);
 
-    let responseAll = await request(app).get('/api/meals');
-    expect(responseAll.statusCode).toBe(200);
-
-    const meals = responseAll.body;
-    expect(meals.length).toBe(15);
-
-    for(let i=0; i<meals.length; i++){
-
-        const res = await request(app).delete('/api/meals/'+meals[i].id);
-        expect(res.statusCode).toBe(204);
-    }
-
-    responseAll = await request(app).get('/api/meals');
-    expect(responseAll.statusCode).toBe(200);
-    expect(responseAll.body.length).toBe(0);
-});
-
-
-test("Update meals", async () => {
-
-    const name = "foo";
-
-    //create a dish
-    const resPost = await request(app)
-        .post('/api/meals')
-        .send({day:"tuesday", name:name, price:"142", allergies: "none"})
+    //do login, which will get a new cookie
+    response = await agent
+        .post('/api/login')
+        .send({userId, password:"bar"})
         .set('Content-Type', 'application/json');
-    expect(resPost.statusCode).toBe(201);
-    const location = resPost.header.location;
+    expect(response.statusCode).toBe(204);
 
 
-    //get it back
-    let resGet = await request(app).get(location);
-    expect(resGet.statusCode).toBe(200);
-    expect(resGet.body.name).toBe(name);
+    //using same cookie got from previous HTTP call
+    response = await agent.get('/api/user');
 
-
-    const modified = "Modified Burger";
-    const id = location.substring(location.lastIndexOf("/") + 1, location.length);
-
-    //modify it with PUT
-    const resPut = await request(app)
-        .put(location)
-        .send({id:id, day:"monday", name: modified, price:"9000,-", allergies:"bar"})
-        .set('Content-Type', 'application/json');
-    expect(resPut.statusCode).toBe(204);
-
-    //get it back again to verify the change
-    resGet = await request(app).get(location);
-    expect(resGet.statusCode).toBe(200);
-    expect(resGet.body.name).toBe(modified);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.userId).toBe(userId);
+    expect(response.body.balance).toBe(1000);
+    //don't really want to return the password...
+    expect(response.body.password).toBeUndefined();
 });
+
+
+
+test("Test login after logout", async () =>{
+
+    const userId = 'foo_' + (counter++);
+
+    //use same cookie jar for the HTTP requests
+    const agent = request.agent(app);
+
+    //create user
+    let response = await agent
+        .post('/api/signup')
+        .send({userId, password:"bar"})
+        .set('Content-Type', 'application/json');
+    expect(response.statusCode).toBe(201);
+
+
+    //can get info
+    response = await agent.get('/api/user');
+    expect(response.statusCode).toBe(200);
+
+
+    //now logout
+    response = await agent.post('/api/logout');
+    expect(response.statusCode).toBe(204);
+
+
+    //after logout, should fail to get data
+    response = await agent.get('/api/user');
+    expect(response.statusCode).toBe(401);
+
+    //do login
+    response = await agent
+        .post('/api/login')
+        .send({userId, password:"bar"})
+        .set('Content-Type', 'application/json');
+    expect(response.statusCode).toBe(204);
+
+
+    //after logging in again, can get info
+    response = await agent.get('/api/user');
+    expect(response.statusCode).toBe(200);
+});
+

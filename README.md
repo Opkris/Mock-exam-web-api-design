@@ -32,21 +32,21 @@ Furthermore, in the readme.md you also MUST have the following:
 -[ ] At least 2 other React pages that can be accessed via React-Router.
 -[ ] At least one page should have some “state”, whose change should be triggerable from the GUI
      (i.e., there should be some actions for which a React component should be re-rendered and
-    produce different HTML).
+     produce different HTML).
 -[ ] From each page, it should be possible to go back to the homepage without having to use the
-    “Back” button in the browser. In other words, do not have pages in which, once reached, it is not
-    possible to navigate out of them. Example: if you are displaying a list of items, and then you have
-    a link to a page to display the details of a specific item, then from such page there should be a link
-    back (or at least to the homepage).
+     “Back” button in the browser. In other words, do not have pages in which, once reached, it is not
+     possible to navigate out of them. Example: if you are displaying a list of items, and then you have
+     a link to a page to display the details of a specific item, then from such page there should be a link
+     back (or at least to the homepage).
     
     
    
 ### R2: Necessary but not sufficient requirements to get at least a D
 -[ ] Create a RESTful API handling at least one GET, one POST, one PUT and one DELETE (besides the
-    ones for authentication/authorization of users), using JSON as data transfer format. Note: you
-    MUST have those endpoints even if they are not used by the frontend.
+     ones for authentication/authorization of users), using JSON as data transfer format. Note: you
+     MUST have those endpoints even if they are not used by the frontend. 
 -[ ] The REST API MUST follow the best practices for API design (e.g., on the naming conventions of
-    the endpoints).
+     the endpoints).
 -[ ] The frontend MUST use such API (e.g., using fetch).
 
 
@@ -75,21 +75,38 @@ Furthermore, in the readme.md you also MUST have the following:
 
 ## *Testing coverage:* 
 
--[ ]  10%.
--[ ]  30%.
+-[x]  10%.
+-[x]  30%.
 -[ ]  50%.
 -[ ]  60%.
 -[ ]  70%.
 
 
 # *Application Topic:*
+-[x] T1 (grade E): When the application starts in development mode, you must have some existing
+     fake/test data representing a valid collection of n items. Note: if you fail to setup the REST API
+     (requirement for grade D), then hardcode the items in the frontend.
 
--[ ] T1 (grade E): A visitor of the page should be able to see the menu for the week.
--[ ] T2 (grade E): When the application starts in development mode, you must have some existing
-    fake/test data representing a valid menu for the current week. Note: if you fail to setup the REST
-    API (requirement for grade D), then hardcode a menu in the frontend.
--[ ] T3 (grade C): A chef should be able to log-in, and create/edit/remove dishes, and specify which
-    dishes are used in which day. You will need to provide a login page, but NOT a signup one. You
-    can hardcode some userIds/passwords in the backend to represent some existing chef users.
--[ ] T4 (grade A): Add a “chat” system based on WebSockets, in which users can discuss the menu in
-    real-time.
+-[x] T2 (grade E): Without the need to log-in, a user should be able to see the list of all n items (with
+     their description) in the game (e.g., in a separated game-description page)
+     
+-[x] T3 (grade C): There should be a page in which a logged-in user can see his/her collection (which
+     will be empty at the beginning).
+ * Every one have a unique name, but all users share the same "list" of items. 
+ 
+-[x] T4 (grade C): A user, when s/he creates a new account, should get t loot-boxes (e.g., t=3). There
+     should be a button to be able to redeem loot-boxes, one at a time (and the content of the lootbox must be displayed somehow to the user once opened). The new items will be added to the
+     collection of the user (which then should be able to see how many duplicates s/he has, and what
+     s/he is still missing).
+ * every new user starts with a balance (1000,-) so they can by a 5 new loot boxes, each loot box contains
+    3 random items, they may contain 3 items of the same object
+     
+-[ ] T5 (grade B): A user should have the option to “mill” (i.e., sell) items in his/her collection. Milling
+     an item should give in-game currency, which can then be used to buy new loot-boxes (up to you
+     what exchange rate you want to give, but based on t and k it should be possible to sell enough
+     items to buy at least 1 new loot-box). 
+* the mill intent is that every loot box have a combined value (at the lowest end) more then what a new loot box
+    will cost. so of the user want to sell all 3 with the (with the lowest value) the user 
+
+-[ ] T6 (grade A): Add a system based on WebSockets in which the user will get (and be notified!) a
+     new loot-box every X amount of time (use something small, e.g. X = 1 minute)

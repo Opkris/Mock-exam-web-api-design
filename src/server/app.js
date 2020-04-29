@@ -1,108 +1,54 @@
 const express = require('express');
-const repository = require("./repository");
 const bodyParser = require('body-parser');
-const path = require('path');
-const LocalStrategy = require('passport-local').Strategy;
 const passport = require('passport');
 const session = require("express-session");
-const WsHandler = require('./ws-handler');
-const authApi = require('./routes/auth-api');
-const Users = require('./db/users');
+const LocalStrategy = require('passport-local').Strategy;
+const path = require('path');
+const cors = require('cors');
+const routes = require('./routes');
+const Repository = require('./repository');
 
+
+Repository.createUser("Kristoffer", "1");
+Repository.createUser("Bank", "1");
+Repository.createUser("1", "1");
 const app = express();
-const ews = require('express-ws')(app);
-const WS = require('ws');
+
+/*
+   Note: this could be controlled with an environmental variable
+ */
+if(false){
+    console.log("Using CORS to allow all origins");
+    app.use(cors());
+
+    /*
+        Even if we allow requests from all origins with
+        "Access-Control-Allow-Origin: *"
+        (which is what cors() does), it would still block
+        requests with authentication (ie cookies).
+        Ie, cannot use wildcard * when dealing with authenticated
+        requests. We would have to explicitly state the origin (host + port),
+        eg, as we did in previous examples:
+
+        app.use(cors({
+            origin: 'http://localhost:1234'
+        }));
+     */
+}
+
+
 
 //to handle JSON payloads
 app.use(bodyParser.json());
 
-app.use(express.static('public'));
+//to handle Form POST. "extended" is just to be able to parse all kinds of objects
+app.use(bodyParser.urlencoded({extended: true}));
 
-
-//***********************************************************//
-//*************************** Chat **************************//
-//***********************************************************//
-let counter = 0;
-
-const messages = [];
-
-
-app.get('/api/messages', (req, res) => {
-
-    const since = req.query["since"];
-
-    const data = messages;
-
-    if (since) {
-        res.json(data.filter(m => m.id > since));
-    } else {
-        res.json(data);
-    }
-});
-
-
-app.post('/api/messages', (req, res) => {
-
-    const dto = req.body;
-
-    const id = counter++ + 10;
-
-    const msg = {id: id, author: dto.author, text: dto.text};
-
-    messages.push(msg);
-
-    res.status(201); //created
-    res.send();
-
-    const nclients = ews.getWss().clients.size;
-    console.log("Going to broadcast message to " + nclients +" clients");
-
-    ews.getWss().clients.forEach((client) => {
-        if (client.readyState === WS.OPEN) {
-            const json = JSON.stringify(msg);
-            console.log("Broadcasting to client: " + JSON.stringify(msg));
-            client.send(json);
-        } else {
-            console.log("Client not ready");
-        }
-    });
-});
-
-
-app.ws('/', function(ws, req) {
-    console.log('Established a new WS connection');
-    const numberOfClients = ews.getWss().clients.size;
-    console.log('Going to broadcast message to ' + numberOfClients + ' clients');
-
-
-    ews.getWss().clients.forEach((client) => {
-        if (client.readyState === WS.OPEN) {
-            const json = JSON.stringify(msg);
-
-            console.log('Broadcasting to client: ' + JSON.stringify(msg));
-            client.send(json);
-        } else {
-            console.log('Client not ready');
-        }
-    });
-
-    ews.getWss().clients.forEach((client) => {
-        const data = JSON.stringify({userCount: n});
-
-        client.send(data);
-    });
-});
-
-function clearMessages(){
-    //yep, that's how you "clear" an array in JS...
-    messages.length = 0;
-}
-
-//***********************************************************//
-
-// WsHandler.init(app);
-0
-
+/*
+    As we are going to use session-based authentication with
+    cookies, we need to tell Express to create new sessions.
+    The cookie will store user info, encrypted.
+ */
 app.use(session({
     secret: 'a secret used to encrypt the session cookies',
     resave: false,
@@ -110,33 +56,46 @@ app.use(session({
 }));
 
 
+//needed to server static files, like HTML, CSS and JS.
+app.use(express.static('public'));
+
 
 passport.use(new LocalStrategy(
+    /*
+        Need to tell which fields represent the  "username" and which the "password".
+        This fields will be in a Form or JSON data sent by user when authenticating.
+     */
     {
         usernameField: 'userId',
         passwordField: 'password'
     },
     function (userId, password, done) {
 
-        const ok = Users.verifyUser(userId, password);
+        const ok = Repository.verifyUser(userId, password);
 
         if (!ok) {
             return done(null, false, {message: 'Invalid username/password'});
         }
 
-        const user = Users.getUser(userId);
+        const user = Repository.getUser(userId);
         return done(null, user);
     }
 ));
 
-
+/*
+    In our server, a user will be represented with some User object,
+    which we store in a database, together with its (should-be-hashed) password.
+    But, when doing authentication via HTTP, we only use the user id.
+    So, we need a way to "serialize" from a User object into a string id,
+    and vice-versa (ie, deserialize from string id to User object).
+ */
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
 
-    const user = Users.getUser(id);
+    const user = Repository.getUser(id);
 
     if (user) {
         done(null, user);
@@ -149,36 +108,57 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-//***********************************************************//
-//*********************Drink's and meal's********************//
-//***********************************************************//
-app.get('/api/meals', (req, res) => {
 
-        res.json(repository.getAllMeals());
+// ****************************************************************
+// ****************************************************************
+// ****************************************************************
+
+
+app.get('/api/allPokemons', (req, res) => {
+
+    res.json(Repository.getAllPokemons());
+});
+
+app.get('/api/randomPokemons', (req, res) => {
+
+    res.json(Repository.getRandomPokemon());
 });
 
 
-app.get('/api/drinks', (req, res) => {
+app.get('/api/myPokemons', (req, res) => {
 
-
-        res.json(repository.getAllDrinks());
+    res.json(Repository.getMyPokemon());
 });
 
-/*
-    Note the use of ":" to represent a variable placeholder.
-    Here we return a specific book with a specific id, eg
-    "http://localhost:8080/books/42"
- */
-app.get('/api/meals/:id', (req, res) => {
 
-    const meal = repository.getMeal(req.params["id"]);
 
-    if (!meal) {
+// ****************************************************************
+// ****************************************************************
+// ****************************************************************
+app.get('/api/pokemon/:id', (req, res) => {
+
+    const pokemon = Repository.getPokemon(req.params["id"]);
+
+    if (!pokemon) {
         res.status(404);
         res.send()
     } else {
-        res.json(meal);
+        res.json(pokemon);
     }
+
+
+app.delete('/api/pokemon/:id', (req, res) => {
+
+    const deleted = Repository.deletePokemon(req.params.id);
+    if (deleted) {
+        res.status(204);
+    } else {
+        //this can happen if book already deleted or does not exist
+        res.status(404);
+    }
+    res.send();
+});
+
     /*
         Either "send()" or "json()" needs to be called, otherwise the
         call of the API will hang waiting for the HTTP response.
@@ -187,125 +167,16 @@ app.get('/api/meals/:id', (req, res) => {
      */
 });
 
-app.get('/api/drinks/:id', (req, res) => {
+// ****************************************************************
+// ****************************************************************
+// ****************************************************************
 
-    const drink = repository.getDrink(req.params["id"]);
+//--- Routes -----------
+app.use('/', routes);
 
-    if (!drink) {
-        res.status(404);
-        res.send()
-    } else {
-        res.json(drink);
-    }
-
+//handling 404
+app.use((req, res, next) => {
+    res.sendFile(path.resolve(__dirname, '..', '..', 'public', 'index.html'));
 });
 
-/*
-    Handle HTTP DELETE request on a book specified by id
- */
-app.delete('/api/meals/:id', (req, res) => {
-
-    const deleted = repository.deleteMeal(req.params.id);
-    if (deleted) {
-        res.status(204);
-    } else {
-        //this can happen if book already deleted or does not exist
-        res.status(404);
-    }
-    res.send();
-});
-
-app.delete('/api/drinks/:id', (req, res) => {
-
-    const deleted = repository.deleteDrink(req.params.id);
-    if (deleted) {
-        res.status(204);
-    } else {
-        //this can happen if book already deleted or does not exist
-        res.status(404);
-    }
-    res.send();
-});
-
-/*
-    Create a new book. The id will be chosen by the server.
-    Such method should return the "location" header telling
-    where such book can be retrieved (ie its URL)
- */
-app.post('/api/meals', (req, res) => {
-
-    const dto = req.body;
-
-    const id = repository.createNewMeal(dto.day, dto.name, dto.price, dto.allergies);
-
-    res.status(201); //created
-    res.header("location", "/api/meals/" + id);
-    res.send();
-});
-
-
-app.post('/api/drinks', (req, res) => {
-
-    const dto = req.body;
-
-    const id = repository.createNewDrink(dto.name, dto.price,);
-
-    res.status(201); //created
-    res.header("location", "/api/drinks/" + id);
-    res.send();
-});
-
-
-/*
-    Handle PUT request, which completely replace the resource
-    with a new one
- */
-app.put('/api/meals/:id', (req, res) => {
-
-    if(req.params.id !== req.body.id){
-        res.status(409);
-        res.send();
-        return;
-    }
-
-    const updated = repository.updateMeal(req.body);
-
-    if (updated) {
-        res.status(204);
-    } else {
-        //this can happen if entity did not exist
-        res.status(404);
-    }
-    res.send();
-});
-
-
-app.put('/api/drinks/:id', (req, res) => {
-
-    if(req.params.id !== req.body.id){
-        res.status(409);
-        res.send();
-        return;
-    }
-
-    const updated = repository.updateDrink(req.body);
-
-    if (updated) {
-        res.status(204);
-    } else {
-        res.status(404);
-    }
-    res.send();
-});
-
-
-/** --------- Routes ---------**/
-app.use('/api', authApi);
-
-//needed to server static files, like HTML, CSS and JS.
-// app.use(express.static('public'));
-
-
-module.exports = {app};
-// module.exports = app;
-
+module.exports = app;

@@ -96,7 +96,7 @@ export class WsStub extends WS{
         // this.send() does not need to be changed, as same signature
     }
 }
-
-export function overrideWebSocket(){
-    global.WebSocket = WsStub;
-}
+//
+// export function overrideWebSocket(){
+//     global.WebSocket = WsStub;
+// }
