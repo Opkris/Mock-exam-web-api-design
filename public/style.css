@@ -1,0 +1,142 @@
+html,
+body {
+  margin: 0px;
+  background-color: #4a4a4a;
+  color: rgb(71, 53, 25);
+  text-align: center;
+  position: relative;
+  font-size: 1em;
+}
+
+
+h2{
+  color: goldenrod;
+  text-align: center;
+  padding-top: 50px;
+  font-size: 40px;
+}
+
+span,
+p {
+  color: white;
+}
+
+h3{
+  color: white;
+}
+
+th{
+  font-size: 30px;
+  width: 25%;
+  color: #ddc7ad;
+}
+
+
+.headerBar {
+  margin-top: 30px;
+}
+
+.btn {
+  width: 90px;
+  height: 20px;
+  background-color: rgb(155, 155, 155);
+  color: black;
+  font-size: 1em;
+  text-align: center;
+  padding: 5px;
+  border: 2px solid goldenrod;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btnM{
+  width: 90px;
+  height: 34px;
+  /*margin-left: 40%;*/
+}
+
+.btnPart {
+  float: right;
+  margin: 30px;
+}
+
+.home {
+  float: left;
+  margin: 30px;
+}
+
+.msgDiv {
+  display: inline-flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+}
+
+.notLoggedInMsg {
+  display: inline;
+  color: #ddc7ad;
+}
+.bankLogo {
+  font-size: 3em;
+  border-bottom: 1px solid rgb(30, 30, 30);
+  padding-bottom: 0;
+}
+
+.mainContent {
+  text-align: center;
+}
+.signupArea {
+  width: 100px;
+  padding-top: 50px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.logOutBtn {
+  float: right;
+  border: 2px solid rgb(30, 30, 30);
+  border-radius: 5px;
+  background-color: rgb(207, 205, 200);
+  color: rgb(71, 53, 25);
+  text-decoration: none;
+  padding: 5px;
+  margin: 35px;
+  width: 100px;
+  cursor: pointer;
+}
+
+.lastInput {
+  margin-bottom: 5px;
+}
+
+.transBtn {
+  font-size: 1em;
+  padding: 5px;
+  margin: 5px;
+  width: 115px;
+}
+
+.errorMsg {
+  color: red;
+  font-size: 2em;
+}
+
+/*************************************************************************'*/
+/*************************************************************************'*/
+/*************************************************************************'*/
+
+.onePokemon{
+  padding: 400px;
+}
+
+.allPokemons{
+  width: 100%;
+  margin-top: 30px;
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}

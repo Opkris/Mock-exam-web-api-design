@@ -1,4 +1,4 @@
-const React = require('react');
+// const React = require('react');
 const {mount} = require('enzyme');
 const {MemoryRouter} = require('react-router-dom');
 

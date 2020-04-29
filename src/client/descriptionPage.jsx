@@ -17,7 +17,7 @@ export class DescriptionPage extends React.Component {
 
     componentDidMount() {
         this.fetchPokemon();
-        this.updateBalance();
+        // this.updateBalance();
     }
 
     async fetchPokemon() {
